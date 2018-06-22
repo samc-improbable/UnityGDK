@@ -200,6 +200,17 @@ namespace Improbable.Gdk.Core
             gameObjectManager.AddGameObjectEntity(entity, gameObject);
         }
 
+        public void RemoveAllEntities()
+        {
+            foreach (var entity in entityMapping)
+            {
+                entityManager.DestroyEntity(entityMapping[entity.Key]);
+                gameObjectManager.TryRemoveGameObjectEntity(entity.Value);
+            }
+
+            entityMapping.Clear();
+        }
+
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
             ComponentPool<AuthoritiesChanged<T>> pool)
         {

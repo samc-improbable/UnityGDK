@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Playground
 {
-    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSDisconnectCleanupGroup))]
     internal class DisconnectSystem : ComponentSystem
     {
+        private MutableView view;
+
         public struct DisconnectData
         {
             public int Length;
@@ -16,12 +18,22 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
         }
 
-        [Inject] private DisconnectData data;
+        [Inject] private DisconnectData disconnectData;
+
+        protected override void OnCreateManager(int capacity)
+        {
+            base.OnCreateManager(capacity);
+
+            var worker = WorkerRegistry.GetWorkerForWorld(World);
+            view = worker.View;
+        }
 
         protected override void OnUpdate()
         {
             Debug.LogWarningFormat("Diconnected from SpatialOS with reason: \"{0}\"",
-                data.DisconnectMessage[0].ReasonForDisconnect);
+                disconnectData.DisconnectMessage[0].ReasonForDisconnect);
+
+            view.RemoveAllEntities();
         }
     }
 }
