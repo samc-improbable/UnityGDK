@@ -393,6 +393,16 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
             }
+            
+            public override void Clean()
+            {
+<# if(commandDetailsList.Count > 0) { #>
+                RequestIdToRequestContext.Clear();
+<# } #>
+<# foreach(var eventDetails in eventDetailsList) { #>
+                EntityIdTo<#= eventDetails.EventName#>Events.Clear();
+<# } #>
+            }
 
             public static <#= componentDetails.ComponentName #>.Translation GetTranslation(uint internalHandleToTranslation)
             {

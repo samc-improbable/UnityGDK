@@ -19,15 +19,22 @@ namespace Improbable.Gdk.Core
 
         public abstract string GetWorkerType { get; }
 
+        private static uint worldId;
+        private readonly bool dynamicId;
+        private Action handler;
+
         protected WorkerBase(string workerId, Vector3 origin)
         {
             if (string.IsNullOrEmpty(workerId))
             {
-                throw new ArgumentException("WorkerId is null or empty.");
+                dynamicId = true;
+            }
+            else
+            {
+                WorkerId = workerId;
             }
 
-            WorkerId = workerId;
-            World = new World(WorkerId);
+            World = new World($"{GetType().Name}{worldId++}");
             WorkerRegistry.SetWorkerForWorld(this);
 
             View = new MutableView(World);
@@ -43,6 +50,11 @@ namespace Improbable.Gdk.Core
 
         public bool Connect(ConnectionConfig config)
         {
+            if (dynamicId)
+            {
+                WorkerId = $"{this.GetType().Name}-{Guid.NewGuid()}";
+            }
+
             if (config is ReceptionistConfig)
             {
                 Connection = ConnectionUtility.ConnectToSpatial((ReceptionistConfig) config, GetWorkerType, WorkerId);
@@ -57,11 +69,14 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            Application.quitting += () =>
+            handler = () =>
             {
                 ConnectionUtility.Disconnect(Connection);
                 Connection = null;
             };
+
+            Application.quitting += handler;
+
             View.Connect();
             return true;
         }
@@ -74,6 +89,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
+            Application.quitting -= handler;
             View.Disconnect("Disconnect called on worker.");
             ConnectionUtility.Disconnect(Connection);
             Connection = null;

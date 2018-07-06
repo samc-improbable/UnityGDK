@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core
 
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
         [UpdateAfter(typeof(InternalSpatialOSDisconnectCleanupGroup))]
-        public class EntityInitialisationGroup 
+        public class EntityInitialisationGroup
         {
         }
     }

@@ -267,6 +267,11 @@ namespace Improbable.Gdk.Core
             EntityQueryRequests.Clear();
         }
 
+        public override void Clean()
+        {
+            RequestIdToEntityId.Clear();
+        }
+
         public override void CleanUpComponents(ref EntityCommandBuffer entityCommandBuffer)
         {
             RemoveComponents<CommandResponses<CreateEntityResponse>>(ref entityCommandBuffer, 0);

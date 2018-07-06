@@ -45,8 +45,7 @@ namespace Playground
                         continue;
                     }
 
-                    var worker = WorkerRegistry.CreateWorker(workerConfig.Type, $"{workerConfig.Type}-{Guid.NewGuid()}",
-                        workerConfig.Origin);
+                    var worker = WorkerRegistry.CreateWorker(workerConfig.Type, "", workerConfig.Origin);
                     Workers.Add(worker);
                 }
 
@@ -68,7 +67,7 @@ namespace Playground
 
                 // because the launcher does not pass in the worker type as an argument
                 var worker = workerType.Equals(string.Empty)
-                    ? WorkerRegistry.CreateWorker<UnityClient>($"{workerType}-{Guid.NewGuid()}", new Vector3(0, 0, 0))
+                    ? WorkerRegistry.CreateWorker<UnityClient>("", new Vector3(0, 0, 0))
                     : WorkerRegistry.CreateWorker(workerType, workerId, new Vector3(0, 0, 0));
 
                 if (worker == null)

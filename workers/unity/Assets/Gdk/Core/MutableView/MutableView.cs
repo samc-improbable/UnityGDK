@@ -209,6 +209,11 @@ namespace Improbable.Gdk.Core
             }
 
             entityMapping.Clear();
+
+            foreach (var translation in TranslationUnits.Values)
+            {
+                translation.Clean();
+            }
         }
 
         public void HandleAuthorityChange<T>(long entityId, Authority authority,
