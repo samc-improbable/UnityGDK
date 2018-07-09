@@ -13,27 +13,9 @@ namespace Improbable.Gdk.Core
 
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
         [UpdateAfter(typeof(InternalSpatialOSReceiveGroup))]
-        public class SpatialOSDisconnectCleanupGroup
-        {
-        }
-
-        [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        [UpdateAfter(typeof(SpatialOSDisconnectCleanupGroup))]
-        public class InternalSpatialOSDisconnectCleanupGroup
-        {
-        }
-
-        [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        [UpdateAfter(typeof(InternalSpatialOSDisconnectCleanupGroup))]
         public class EntityInitialisationGroup
         {
         }
-    }
-
-    [UpdateAfter(typeof(SpatialOSReceiveGroup))]
-    [UpdateBefore(typeof(SpatialOSSendGroup))]
-    public class SpatialOSUpdateGroup
-    {
     }
 
     [UpdateAfter(typeof(PostLateUpdate))]
@@ -55,5 +37,11 @@ namespace Improbable.Gdk.Core
         public class InternalSpatialOSCleanGroup
         {
         }
+    }
+
+    [UpdateAfter(typeof(SpatialOSReceiveGroup))]
+    [UpdateBefore(typeof(SpatialOSSendGroup))]
+    public class SpatialOSUpdateGroup
+    {
     }
 }

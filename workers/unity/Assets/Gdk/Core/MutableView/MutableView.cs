@@ -282,6 +282,8 @@ namespace Improbable.Gdk.Core
         {
             entityManager.RemoveComponent<IsConnected>(WorkerEntity);
             entityManager.AddSharedComponentData(WorkerEntity, new OnDisconnected { ReasonForDisconnect = reason });
+
+            RemoveAllEntities();
         }
 
         internal void CreateEntity(long entityId)
