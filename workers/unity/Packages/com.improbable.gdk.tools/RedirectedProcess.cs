@@ -78,7 +78,10 @@ namespace Improbable.Gdk.Tools
 
                 if (process.ExitCode == 0)
                 {
-                    Debug.Log(processOutput);
+                    if (processOutput.Length != 0)
+                    {
+                        Debug.Log(processOutput);
+                    }
                 }
                 else
                 {
